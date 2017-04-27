@@ -70,9 +70,15 @@ $app->group("/auth",function()use($app){
         $app->get('/register',function(Request $req, Response $resp, $args){
             return $this->view->render($resp,'default/Auth/register.html');
         })->setName('auth.register'); 
-        $app->get("/changepassword",function(Request $req, Response $resp, $args){
+        $app->get("/reset-passwd",function(Request $req, Response $resp, $args){
             return $this->view->render($resp,'default/Auth/password.html');
         })->setName('auth.passwd');
+        $app->post('/register',function(Request $req, Response $resp, $args){
+            $data = $req->getParsedBody();
+            
+            //$data['email'] = filter_var($data['email'],FILE)
+            return $resp;
+        });
 });
 $app->group('/api',function()use($app){
     $app->get('/cart',function(Request $req, Response $resp,$args){
