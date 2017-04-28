@@ -1,22 +1,76 @@
-{% extends 'default/extends/base.html' %}
-
-{% block content %}
+{% extends 'default/extends/base.html' %} {% block content %}
+<div class="col-md-6 col-md-offset-3">
     <div class="panel panel-primary">
         <div class="panel-heading">
-              <h3 class="panel-title">
-                注册用户
-             </h3>
+            <h3 class="panel-title">
+                用户注册
+            </h3>
         </div>
         <div class="panel-body">
-            <form method="post">
-                <div class="form-group">
-                    <label for="" class="label"></label>
-                    <input type="text" class="form-control">
+            <form method="post" class="layui-form">
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">用户名:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" lay-verify="username" class="layui-input">
+                    </div>
+
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">注册</button>
+                <div class="layui-form-item">
+                    <label for="password" class="layui-form-label">密  码:</label>
+                    <div class="layui-input-block">
+                        <input type="password" required lay-verify="pass" name="passwd" class="layui-input">
+                    </div>
+                </div>
+                 <div class="layui-form-item">
+                    <label for="password" class="layui-form-label">确认密码:</label>
+                    <div class="layui-input-block">
+                        <input type="repasswd" required lay-verify="pass" name="repasswd" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" lay-submit lay-filter='register' class="btn btn-primary">登录</button>
+                    </div>
+
                 </div>
             </form>
-         </div>
+        </div>
     </div>
+</div>
+{% endblock %} {% block script_block %}
+<script>
+    var $ = null;
+    layui.use(['element', 'jquery', 'form'], function () {
+        var element = layui.element();
+        var form = layui.form();
+        $ = layui.jquery;
+        form.verify({
+            username: function (value) {
+                    if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                        return '用户名不能有特殊字符';
+                    }
+                    if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                        return '用户名首尾不能出现下划线\'_\'';
+                    }
+                    if (/^\d+\d+\d$/.test(value)) {
+                        return '用户名不能全为数字';
+                    }
+                    if (/([\s])/.test(value)) {
+                        return '用户名不能出现空格';
+                    }
+                }
+
+                //我们既支持上述函数式的方式，也支持下述数组的形式
+                //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
+                ,
+            pass: [
+                /^[\S]{6,12}$/, '密码必须6到12位，且不能出现空格'
+            ]
+        });
+        form.on('submit(register)', function (data) {
+            console.log(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>
 {% endblock %}
