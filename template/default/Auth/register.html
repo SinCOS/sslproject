@@ -13,7 +13,6 @@
                     <div class="layui-input-block">
                         <input type="text" name="username" lay-verify="username" class="layui-input">
                     </div>
-
                 </div>
                 <div class="layui-form-item">
                     <label for="password" class="layui-form-label">密  码:</label>
@@ -68,8 +67,11 @@
             ]
         });
         form.on('submit(register)', function (data) {
-            console.log(JSON.stringify(data.field));
-            return false;
+            var fileds = data.field;
+            if (fileds['passwd'] != fileds['repasswd']){
+                layer.msg('两次输入密码不一致');
+                return false;
+            }
         });
     });
 </script>
