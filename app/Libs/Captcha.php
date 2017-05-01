@@ -4,11 +4,11 @@ namespace  App\Libs;
 
 class Captcha
 {
-    public function __invoke()
+    public function __invoke($req, $resp ,$args)
     {
         ob_clean();
-        header("Content-type:image/PNG");
-        srand((double) microtime() * 1000000);
+        
+       
         $imagewidth = 130;
         $imageheight = 45;
         $authimage = imagecreate($imagewidth, $imageheight);
@@ -37,10 +37,12 @@ class Captcha
         for ($i = 0; $i < 4; $i++) {
             $authcode .= substr($array, rand(0, 35), 1);
         }
-        imagettftext($authimage, 30, rand(-5, 10), 20, 33, $red, 'arial.ttf', $authcode);
+        @imagettftext($authimage, 30, rand(-5, 10), 20, 33, $red, __DIR__ .'/SourceCodePro-Regular.ttf', $authcode);
 
         ImagePNG($authimage);
         ImageDestroy($authimage);
         $_SESSION['authcode'] = $authcode;
+        return $resp->withHeader("Content-type","image/PNG");
+        
     }
 }

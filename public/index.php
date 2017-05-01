@@ -119,8 +119,6 @@ $app->group('/api', function () use ($app) {
     $app->get('/info', function (Request $req, Response $resp, $args) {
         phpinfo();
     });
-    $app->get('/verify', function (Request $req, Response $resp, $args) {
-        
-    });
+    $app->get('/verify','\App\Libs\Captcha');
 });
 $app->run();
